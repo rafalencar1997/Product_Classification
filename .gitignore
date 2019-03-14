@@ -111,3 +111,12 @@ logs/*
 
 # Datasets
 datasets/*
+!datasets/.gitkeep
+
+# Datasets
+trained_models/*
+!trained_models/.gitkeep
+
+# Datasets
+logs/*
+!logs/.gitkeep

@@ -54,7 +54,7 @@ class Dataset:
         dataset.columns = columns_json
         dataset.to_json(filename_jsonl, orient='records', lines=True)
 
-    def load(self, text_field='name', label_field='category'):
+    def load(self, text_field='name', label_field='category', remove_stopwords=True):
         file_path = Path(self.filename)
         filename_jsonl = os.path.join(file_path.parent, file_path.stem + '.jsonl')
         
@@ -67,12 +67,16 @@ class Dataset:
             if len(obj[label_field]) > 0:
                 if len(obj[text_field]) > 0:
                     text = obj[text_field].lower()
-#                     tokens = self.regex_tokenizer.tokenize(text)
-#                     filtered_words = filter(lambda token: token not in self.stopwords_en, tokens)
-#                     text = " ".join(filtered_words)
-                    json['text'] = text
-                    json['label'] = obj[label_field].lower()
-                    dataset.append(json)
+                    if remove_stopwords:
+                        tokens = self.regex_tokenizer.tokenize(text)
+                        filtered_words = filter(lambda token: token not in self.stopwords_en, tokens)
+                        text = " ".join(filtered_words)
+                    if len(text) > 0:
+                        json['text'] = text
+                        json['label'] = obj[label_field].lower()
+                        dataset.append(json)
+                    else:
+                        not_text += 1  
                 else:
                     not_text += 1    
             else:

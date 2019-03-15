@@ -124,3 +124,7 @@ created_models/*
 # Logs
 logs/*
 !logs/.gitkeep
+
+# Embeddings
+embeddings/*
+!embeddings/.gitkeep

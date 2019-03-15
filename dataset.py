@@ -19,7 +19,7 @@ class Dataset:
     def __init__(self, filename):
         self.filename = filename
         self.stopwords_en = set(stopwords.words('english'))
-        self.tokenizer = RegexpTokenizer(r'\w+')
+        self.regex_tokenizer = RegexpTokenizer(r'\w+')
         self.data = None
     
     @property
@@ -67,9 +67,9 @@ class Dataset:
             if len(obj[label_field]) > 0:
                 if len(obj[text_field]) > 0:
                     text = obj[text_field].lower()
-                    tokens = self.tokenizer.tokenize(text)
-                    filtered_words = filter(lambda token: token not in self.stopwords_en, tokens)
-                    text = " ".join(filtered_words)
+#                     tokens = self.regex_tokenizer.tokenize(text)
+#                     filtered_words = filter(lambda token: token not in self.stopwords_en, tokens)
+#                     text = " ".join(filtered_words)
                     json['text'] = text
                     json['label'] = obj[label_field].lower()
                     dataset.append(json)

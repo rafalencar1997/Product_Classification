@@ -31,6 +31,10 @@ class Dataset:
         return self.data.label
     
     @property
+    def root_label_unique(self):
+        return self.data.label.transform(lambda x: x.split(' > ')[0]).unique()
+    
+    @property
     def label_unique(self):
         return self.data.label.unique()
     
@@ -180,7 +184,6 @@ class Dataset:
     def tokenize(self, max_nb_words=20000):
         tokenizer = Tokenizer(num_words=max_nb_words)
         tokenizer.fit_on_texts(self.text)
-        print('Number of Tokens:', len(tokenizer.word_counts))
         return tokenizer
 
     def vectorize(self, max_nb_words=20000):

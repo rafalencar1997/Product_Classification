@@ -54,7 +54,7 @@ class Dataset:
         dataset.columns = columns_json
         dataset.to_json(filename_jsonl, orient='records', lines=True)
 
-    def load(self, text_field='name', label_field='category', remove_stopwords=True):
+    def load(self, text_field='name', label_field='category', remove_stopwords=True, root_label=False):
         file_path = Path(self.filename)
         filename_jsonl = os.path.join(file_path.parent, file_path.stem + '.jsonl')
         
@@ -73,7 +73,10 @@ class Dataset:
                         text = " ".join(filtered_words)
                     if len(text) > 0:
                         json['text'] = text
-                        json['label'] = obj[label_field].lower()
+                        if root_label:
+                            json['label'] = obj[label_field].lower().split(' > ')[0]
+                        else:
+                            json['label'] = obj[label_field].lower()
                         dataset.append(json)
                     else:
                         not_text += 1  
